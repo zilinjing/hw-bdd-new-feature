@@ -37,10 +37,26 @@ class MoviesController < ApplicationController
     redirect_to movies_path
   end
 
+  def show_by_director
+    @movie = Movie.find(params[:id])
+    
+    # Check if movie has a director
+    if @movie.director.blank?
+      flash[:warning] = "'#{@movie.title}' has no director info"
+      redirect_to movies_path
+    else
+      @director = @movie.director
+      @movies = @movie.others_by_same_director
+    end
+  end
+
   private
 
   # Note - for Part 1, you may need to modify this method.
-  def movie_params
-    params.require(:movie).permit(:title, :rating, :description, :release_date)
-  end
+#   def movie_params
+#     params.require(:movie).permit(:title, :rating, :description, :release_date)
+#   end
+    def movie_params
+        params.require(:movie).permit(:title, :rating, :description, :release_date, :director)
+    end
 end

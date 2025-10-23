@@ -20,5 +20,10 @@ Then(/I should see all the movies/) do
   # Make sure that all the movies in the app are visible in the table
   Movie.all.each do |movie|
     step %(I should see "#{movie.title}")
-  end
+  end  
+end
+
+Then(/^the director of "([^"]*)" should be "([^"]*)"$/) do |movie_title, director_name|
+    movie = Movie.find_by(title: movie_title)
+    expect(movie.director).to eq(director_name)
 end
